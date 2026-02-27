@@ -67,13 +67,13 @@ export function GXPConfirmDialog({
   const getSeverityBg = () => {
     switch (actionType) {
       case 'delete':
-        return 'bg-red-50';
+        return 'bg-red-50 dark:bg-red-950/50';
       case 'status-change':
-        return 'bg-orange-50';
+        return 'bg-orange-50 dark:bg-orange-950/50';
       case 'edit':
-        return 'bg-blue-50';
+        return 'bg-blue-50 dark:bg-blue-950/50';
       default:
-        return 'bg-gray-50';
+        return 'bg-gray-50 dark:bg-gray-800/50';
     }
   };
 

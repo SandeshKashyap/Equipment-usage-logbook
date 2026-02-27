@@ -44,7 +44,7 @@ interface DialogContentProps {
 const DialogContent: React.FC<DialogContentProps> = ({ className, children }) => {
   return (
     <div className={cn(
-      "bg-white p-8 rounded-2xl shadow-2xl border border-slate-200 ring-1 ring-slate-900/5",
+      "bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 ring-1 ring-slate-900/5 dark:ring-slate-100/5 text-slate-900 dark:text-slate-100",
       className
     )}>
       {children}
