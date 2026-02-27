@@ -28,6 +28,12 @@ export function EquipmentList() {
   const [statusFilter, setStatusFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
 
+  // Sorting state
+  type SortColumn = 'name' | 'typeName' | 'status' | 'lastCleanedDate';
+  type SortDirection = 'asc' | 'desc';
+  const [sortColumn, setSortColumn] = useState<SortColumn | null>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+
   // Dialog states
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -58,7 +64,7 @@ export function EquipmentList() {
   };
 
   const filteredEquipment = useMemo(() => {
-    return equipment.filter((item) => {
+    const filtered = equipment.filter((item) => {
       const matchesSearch = searchQuery === '' ||
         item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.typeName.toLowerCase().includes(searchQuery.toLowerCase());
@@ -66,7 +72,23 @@ export function EquipmentList() {
       const matchesType = typeFilter === '' || item.typeName === typeFilter;
       return matchesSearch && matchesStatus && matchesType;
     });
-  }, [equipment, searchQuery, statusFilter, typeFilter]);
+
+    if (!sortColumn) return filtered;
+
+    return [...filtered].sort((a, b) => {
+      let aVal = a[sortColumn] ?? '';
+      let bVal = b[sortColumn] ?? '';
+
+      if (sortColumn === 'lastCleanedDate') {
+        const aTime = aVal ? new Date(aVal).getTime() : 0;
+        const bTime = bVal ? new Date(bVal).getTime() : 0;
+        return sortDirection === 'asc' ? aTime - bTime : bTime - aTime;
+      }
+
+      const compare = String(aVal).localeCompare(String(bVal));
+      return sortDirection === 'asc' ? compare : -compare;
+    });
+  }, [equipment, searchQuery, statusFilter, typeFilter, sortColumn, sortDirection]);
 
   const hasActiveFilters = searchQuery !== '' || statusFilter !== '' || typeFilter !== '';
 
@@ -75,6 +97,39 @@ export function EquipmentList() {
     setStatusFilter('');
     setTypeFilter('');
   };
+
+  const handleSort = (column: SortColumn) => {
+    if (sortColumn === column) {
+      if (sortDirection === 'desc') {
+        setSortColumn(null);
+        setSortDirection('asc');
+      } else {
+        setSortDirection('desc');
+      }
+    } else {
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
+  };
+
+  const SortIcon = ({ column }: { column: SortColumn }) => (
+    <svg
+      className={`inline-block ml-1 h-3.5 w-3.5 transition-colors ${sortColumn === column ? 'text-slate-900 dark:text-slate-100' : 'text-slate-400 dark:text-slate-500'}`}
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={2}
+      stroke="currentColor"
+    >
+      {sortColumn === column && sortDirection === 'asc' ? (
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+      ) : sortColumn === column && sortDirection === 'desc' ? (
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+      ) : (
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+      )}
+    </svg>
+  );
 
   const handleCreate = async (data: EquipmentFormData) => {
     try {
@@ -299,10 +354,18 @@ export function EquipmentList() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Equipment Name</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Last Cleaned</TableHead>
+                <TableHead className="cursor-pointer select-none hover:text-slate-900 dark:hover:text-slate-100 transition-colors" onClick={() => handleSort('name')}>
+                  Equipment Name <SortIcon column="name" />
+                </TableHead>
+                <TableHead className="cursor-pointer select-none hover:text-slate-900 dark:hover:text-slate-100 transition-colors" onClick={() => handleSort('typeName')}>
+                  Type <SortIcon column="typeName" />
+                </TableHead>
+                <TableHead className="cursor-pointer select-none hover:text-slate-900 dark:hover:text-slate-100 transition-colors" onClick={() => handleSort('status')}>
+                  Status <SortIcon column="status" />
+                </TableHead>
+                <TableHead className="cursor-pointer select-none hover:text-slate-900 dark:hover:text-slate-100 transition-colors" onClick={() => handleSort('lastCleanedDate')}>
+                  Last Cleaned <SortIcon column="lastCleanedDate" />
+                </TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
