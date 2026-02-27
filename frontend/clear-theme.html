@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head><title>Clear Theme</title></head>
+<body>
+<h1>Theme Storage Clearer</h1>
+<button onclick="clearTheme()">Clear Theme Storage</button>
+<div id="result"></div>
+
+<script>
+function clearTheme() {
+  const keys = ['equipment-logbook-theme', 'vite-ui-theme'];
+  keys.forEach(key => {
+    const value = localStorage.getItem(key);
+    console.log(`Clearing ${key}:`, value);
+    localStorage.removeItem(key);
+  });
+  document.getElementById('result').innerHTML = '<p>Theme storage cleared! Reload your app.</p>';
+}
+
+// Show current values
+window.onload = () => {
+  const keys = ['equipment-logbook-theme', 'vite-ui-theme'];
+  let html = '<h2>Current values:</h2><ul>';
+  keys.forEach(key => {
+    html += `<li>${key}: ${localStorage.getItem(key) || 'null'}</li>`;
+  });
+  html += '</ul>';
+  document.getElementById('result').innerHTML = html;
+};
+</script>
+</body>
+</html>

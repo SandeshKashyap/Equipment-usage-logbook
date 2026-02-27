@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme Debug</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-8">
+    <h1 class="text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">Light Mode Title</h1>
+    <div class="bg-white dark:bg-slate-900 p-4 border-2 border-slate-200 dark:border-slate-700 rounded">
+        <p class="text-slate-900 dark:text-slate-100">This should be dark text on white background in light mode</p>
+    </div>
+    
+    <button onclick="document.documentElement.classList.toggle('dark')" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+        Toggle Dark Mode
+    </button>
+    
+    <script>
+        console.log('HTML classes:', document.documentElement.classList.toString());
+        console.log('Has dark class:', document.documentElement.classList.contains('dark'));
+    </script>
+</body>
+</html>

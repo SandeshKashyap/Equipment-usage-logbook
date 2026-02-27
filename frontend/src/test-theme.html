@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Theme Test</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+</head>
+<body class="min-h-screen bg-white dark:bg-slate-900 transition-colors">
+  <div class="p-8">
+    <h1 class="text-4xl font-bold text-slate-900 dark:text-white mb-4">
+      Theme Test
+    </h1>
+
+    <div class="border-2 border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl bg-white dark:bg-slate-800 p-6 mb-4">
+      <p class="text-slate-700 dark:text-slate-300">
+        If you can see this card with borders and shadows, Tailwind is working.
+      </p>
+    </div>
+
+    <button onclick="document.documentElement.classList.toggle('dark')"
+            class="bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-4 py-2 rounded-lg shadow-md">
+      Toggle Dark Mode
+    </button>
+
+    <p class="mt-4 text-sm text-slate-600 dark:text-slate-400">
+      Current classes: <span id="classes"></span>
+    </p>
+  </div>
+
+  <script>
+    function updateClasses() {
+      document.getElementById('classes').textContent =
+        document.documentElement.classList.toString() || '(none)';
+    }
+    updateClasses();
+    setInterval(updateClasses, 500);
+  </script>
+</body>
+</html>
