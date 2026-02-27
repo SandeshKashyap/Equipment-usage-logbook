@@ -105,11 +105,11 @@ export function EquipmentForm({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="lastCleanedDate">Last Cleaned Date</Label>
+        <Label htmlFor="lastCleanedDate">Last Cleaned Date *</Label>
         <Input
           id="lastCleanedDate"
           type="date"
-          {...register('lastCleanedDate')}
+          {...register('lastCleanedDate', { required: 'Last cleaned date is required' })}
         />
         {errors.lastCleanedDate && (
           <p className="text-sm text-destructive">{errors.lastCleanedDate.message}</p>

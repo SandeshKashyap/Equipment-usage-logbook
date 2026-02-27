@@ -26,5 +26,6 @@ public class CreateEquipmentRequest {
     @Pattern(regexp = "Active|Inactive|Under Maintenance", message = "Status must be Active, Inactive, or Under Maintenance")
     private String status;
 
+    @NotNull(message = "Last cleaned date is required")
     private LocalDate lastCleanedDate;
 }
